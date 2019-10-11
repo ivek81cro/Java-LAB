@@ -46,7 +46,7 @@ public class calculator
 			else
 			{
 				System.out.println("Izraz ne odgovara");
-				break;
+				return;
 			}
 			broj=0;
 		}
@@ -92,14 +92,14 @@ public class calculator
 				spremnik.push(broj);
 			else if(operator=='-')
 			{
-				if (j == 0)
+				if (j == 0)//ako je predznak prvog broja -
 					continue;
 				spremnik.push(broj*(-1));
 			}
 			else if(operator=='*')
-				rezultat+=broj*spremnik.pop();
+				spremnik.push(broj*(spremnik.empty()?1:spremnik.pop()));
 			else if(operator=='/')
-				rezultat+=spremnik.pop()/2;
+				spremnik.push(spremnik.empty()?broj:spremnik.pop()/broj);
 			else
 			{
 				System.out.println("Izraz ne odgovara");
