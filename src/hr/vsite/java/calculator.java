@@ -1,3 +1,5 @@
+//progr. args: -62+23*35-56/2
+
 package hr.vsite.java;
 
 import java.util.Stack;
