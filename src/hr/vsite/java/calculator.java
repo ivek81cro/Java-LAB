@@ -60,9 +60,10 @@ public class calculator
 	public static void izracunSaPrioritetom(String args)
 	{
 		int broj=0, rezultat=0;
-		char operator=0;
+		char operator='+';
 		if(args.charAt(0)=='-')
 			operator='-';
+		Stack<Integer> spremnik=new Stack<>();
 		for(int j=0;j<args.length();j++)
 		{
 			//dobiti broj ako je viseznamenkasti ili opertator
@@ -78,18 +79,15 @@ public class calculator
 					}
 				}
 			}
-			else
-			{
-				if (!Character.isDigit(args.charAt(j + 1)))
-				{
+			else {
+				if (!Character.isDigit(args.charAt(j + 1))) {
 					System.out.println("Izraz ne odgovara");
-					break;
+					return;
 				}
-				operator=args.charAt(j);
+				operator = args.charAt(j);
 				continue;
 			}
 
-			Stack<Integer> spremnik=new Stack<>();
 			if(operator=='+')
 				spremnik.push(broj);
 			else if(operator=='-')
@@ -114,7 +112,7 @@ public class calculator
 			rezultat+=spremnik.pop();
 		}
 		if(rezultat!=0)
-			System.out.println("Rezultat:"+rezultat);
+			System.out.println("Rezultat-prioritet:"+rezultat);
 			//provjera ostatka izraza tokom izracuna
 		else
 			System.out.println("Nepravilan izraz");
