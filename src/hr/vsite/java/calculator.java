@@ -61,7 +61,6 @@ public class calculator
 		char operator=0;
 		if(args.charAt(0)=='-')
 			operator='-';
-		Stack<Integer> spremnik=new Stack<>();
 		for(int j=0;j<args.length();j++)
 		{
 			//dobiti broj ako je viseznamenkasti ili opertator
@@ -88,6 +87,7 @@ public class calculator
 				continue;
 			}
 
+			Stack<Integer> spremnik=new Stack<>();
 			if(operator=='+')
 				spremnik.push(broj);
 			else if(operator=='-')
