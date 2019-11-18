@@ -8,9 +8,11 @@ import java.util.Iterator;
 public class Racun {
     final String brojRn;
     final Vlasnik vlasnik;
+    final VlasnikPravna vlasnikPravna;
     final double pocStanje;
-    private double trenStanje;//get
-    private List<Promet> p=new ArrayList<>();//ili array
+    protected double trenStanje;//get
+    double kamata=0.2;
+    protected List<Promet> p=new ArrayList<>();//ili array
 
     /**
      *
@@ -20,7 +22,27 @@ public class Racun {
      */
     Racun(String brR, Vlasnik v, double p)
     {
-        brojRn=brR; vlasnik=v; pocStanje=p; trenStanje=p;
+        brojRn=brR; vlasnik=v; pocStanje=p; trenStanje=p; vlasnikPravna=null;
+    }
+    Racun(String brR, VlasnikPravna vp, double p)
+    {
+        brojRn=brR; vlasnik=null; pocStanje=p; trenStanje=p; vlasnikPravna=vp;
+    }
+
+    /**
+     *
+     * @param brR - String broj racuna
+     * @param v - Klasa Vlasnik
+     * @param p - double Poetno stanje
+     * @param kam - double iznos kamate
+     */
+    Racun(String brR, Vlasnik v, double p, double kam)
+    {
+        brojRn=brR; vlasnik=v; pocStanje=p; trenStanje=p; kamata=kam; vlasnikPravna=null;
+    }
+    Racun(String brR, VlasnikPravna vp, double p, double kam)
+    {
+        brojRn=brR; vlasnik=null; pocStanje=p; trenStanje=p; vlasnikPravna=vp; kamata=kam;
     }
 
     /**
@@ -122,13 +144,35 @@ public class Racun {
      */
     public void printPromet()
     {
+        if(vlasnik==null)
+        {
+            printPrometPravna();
+        }
+        else
+        {
+            printPrometFizicka();
+        }
+    }
+    public void printPrometPravna()
+    {
+        System.out.println("\n" + vlasnikPravna.ispisPodataka() + " | Početno stanje:" + pocStanje);
+        Iterator<Promet> promet = p.iterator();
+        while (promet.hasNext())
+        {
+            System.out.println(promet.next().ispisPromet());
+        }
+        System.out.println(vlasnikPravna.ispisPodataka() + " | Trenutno stanje:" + trenStanje);
+        System.out.println("Kontrola-->" + kontrola());
+    }
+    public void printPrometFizicka()
+    {
         System.out.println("\n" + vlasnik.ispisPodataka() + " | Početno stanje:" + pocStanje);
         Iterator<Promet> promet = p.iterator();
         while (promet.hasNext())
         {
             System.out.println(promet.next().ispisPromet());
         }
-        System.out.println("Trenutno stanje:" + trenStanje);
+        System.out.println(vlasnik.ispisPodataka() + " | Trenutno stanje:" + trenStanje);
         System.out.println("Kontrola-->" + kontrola());
     }
 
@@ -156,4 +200,10 @@ public class Racun {
 
         return false;
     }
+
+    /**
+     * Obracun kamata po racunima evidentira se kao promet
+     * @return boolean
+     */
+    public boolean obracunKamata(){return false;}
 }

@@ -7,6 +7,8 @@ import java.util.Date;
 public class Banka {
 
     public static void main(String[] args) throws ParseException {
+        //Prvi dio
+
         Vlasnik v1=new Vlasnik("Ivo", "Ivić", "1234567890");
         Vlasnik v2=new Vlasnik("Marko", "Marić", "1234567890", "Maksimir 11");
         System.out.println(v2.ispisPodataka());
@@ -30,5 +32,44 @@ public class Banka {
         b1.printPromet();
         b2.printPromet();
         b3.printPromet();
+
+        //Drugi dio
+
+        Vlasnik v3=new Vlasnik("Ivo", "Ivić", "1234567890");
+        VlasnikPravna v4 = new VlasnikPravna(v1,"09876543210","Ulica 15", "Firma d.d.");
+
+        Racun b4;
+        Racun b5;
+
+        TekuciRacun t1= new TekuciRacun("0004",v3,0,4,100,14);
+        b4=t1;
+
+        OroceniRacun o1=new OroceniRacun("0005",v4,0,5);
+        b5=o1;
+
+        System.out.println(b4.getTrenStanje());
+        System.out.println(b5.getTrenStanje());
+
+        b4.uplata(date1,Iznos.setIznos("HRK",100));
+        b5.uplata(date1,Iznos.setIznos("HRK",200));
+        System.out.println(b4.getTrenStanje());
+        System.out.println(b5.getTrenStanje());
+        b4.obracunKamata();
+        b5.obracunKamata();
+        System.out.println(b4.getTrenStanje());
+        System.out.println(b5.getTrenStanje());
+
+        b4.isplata(date1,Iznos.setIznos("HRK",200));
+        b5.isplata(date1,Iznos.setIznos("HRK",10));
+        System.out.println(b4.getTrenStanje());
+        System.out.println(b5.getTrenStanje());
+
+        b4.obracunKamata();
+        b5.obracunKamata();
+        System.out.println(b4.getTrenStanje());
+        System.out.println(b5.getTrenStanje());
+
+        b4.printPromet();
+        b5.printPromet();
     }
 }

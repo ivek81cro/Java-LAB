@@ -9,7 +9,8 @@ public class Iznos {
      * @param v - String valuta
      * @param i - double iznos
      */
-    private Iznos(String v, double i) {
+    private Iznos(String v, double i)
+    {
         valuta = v;
         iznos = i;
     }
@@ -25,5 +26,3 @@ public class Iznos {
         return new Iznos(val,izn);
     }
 }
-
-
