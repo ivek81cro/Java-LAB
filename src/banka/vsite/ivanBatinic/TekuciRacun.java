@@ -33,6 +33,17 @@ public class TekuciRacun extends Racun {
         }
         return false;
     }
+    private boolean isplataKamata(Date d, Iznos iznos)
+    {
+        if(provjeriValutu(iznos.valuta)) {
+
+            Promet promet = Promet.potPromet(d, iznos);
+            p.add(promet);
+            trenStanje -= iznos.iznos;
+            return true;
+        }
+        return false;
+    }
     @Override
     public boolean obracunKamata()
     {
@@ -40,7 +51,7 @@ public class TekuciRacun extends Racun {
         Date date = new Date();
         if(trenStanje<0)
         {
-            isplata(date, Iznos.setIznos("HRK", trenStanje*zatKamata/100));
+            isplataKamata(date, Iznos.setIznos("HRK", -1*trenStanje*zatKamata/100));
         }
         else
         {
