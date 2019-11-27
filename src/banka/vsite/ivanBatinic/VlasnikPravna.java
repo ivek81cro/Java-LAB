@@ -1,15 +1,13 @@
 package vsite.ivanBatinic;
 
-public class VlasnikPravna {
+public class VlasnikPravna extends Vlasnik{
 
-    Vlasnik vlasnik;
-    final String oib;
-    String adresa;
+    VlasnikFizicka vlasnik;
     String naziv;
 
-    VlasnikPravna(Vlasnik v, String oib, String adresa, String naziv)
+    VlasnikPravna(VlasnikFizicka v, String oib, String adresa, String naziv)
     {
-        vlasnik=v; this.oib=oib; this.adresa=adresa; this.naziv=naziv;
+        super(adresa,oib); vlasnik=v; this.naziv=naziv;
     }
 
     public String getNaziv(){return naziv;}
@@ -17,7 +15,7 @@ public class VlasnikPravna {
     public String getAdresa(){return adresa;}
     public void setAdresa(String a){ adresa=a;}
     public String getOib(){return  oib;}
-
+    @Override
     public String ispisPodataka()
     {
         return "Naziv:" + naziv + " OIB:" + oib + " Adresa:" + adresa +

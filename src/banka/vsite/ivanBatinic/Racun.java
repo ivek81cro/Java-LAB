@@ -8,7 +8,6 @@ import java.util.Iterator;
 public class Racun {
     final String brojRn;
     final Vlasnik vlasnik;
-    final VlasnikPravna vlasnikPravna;
     final double pocStanje;
     protected double trenStanje;//get
     double kamata=0.2;
@@ -22,11 +21,7 @@ public class Racun {
      */
     Racun(String brR, Vlasnik v, double p)
     {
-        brojRn=brR; vlasnik=v; pocStanje=p; trenStanje=p; vlasnikPravna=null;
-    }
-    Racun(String brR, VlasnikPravna vp, double p)
-    {
-        brojRn=brR; vlasnik=null; pocStanje=p; trenStanje=p; vlasnikPravna=vp;
+        brojRn=brR; vlasnik=v; pocStanje=p; trenStanje=p;
     }
 
     /**
@@ -38,11 +33,7 @@ public class Racun {
      */
     Racun(String brR, Vlasnik v, double p, double kam)
     {
-        brojRn=brR; vlasnik=v; pocStanje=p; trenStanje=p; kamata=kam; vlasnikPravna=null;
-    }
-    Racun(String brR, VlasnikPravna vp, double p, double kam)
-    {
-        brojRn=brR; vlasnik=null; pocStanje=p; trenStanje=p; vlasnikPravna=vp; kamata=kam;
+        brojRn=brR; vlasnik=v; pocStanje=p; trenStanje=p; kamata=kam;
     }
 
     /**
@@ -143,28 +134,6 @@ public class Racun {
      * Ispis prometa po racunu sa kontrolom
      */
     public void printPromet()
-    {
-        if(vlasnik==null)
-        {
-            printPrometPravna();
-        }
-        else
-        {
-            printPrometFizicka();
-        }
-    }
-    public void printPrometPravna()
-    {
-        System.out.println("\n" + vlasnikPravna.ispisPodataka() + " | Početno stanje:" + pocStanje);
-        Iterator<Promet> promet = p.iterator();
-        while (promet.hasNext())
-        {
-            System.out.println(promet.next().ispisPromet());
-        }
-        System.out.println(vlasnikPravna.ispisPodataka() + " | Trenutno stanje:" + trenStanje);
-        System.out.println("Kontrola-->" + kontrola());
-    }
-    public void printPrometFizicka()
     {
         System.out.println("\n" + vlasnik.ispisPodataka() + " | Početno stanje:" + pocStanje);
         Iterator<Promet> promet = p.iterator();

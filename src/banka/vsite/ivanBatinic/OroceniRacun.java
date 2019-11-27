@@ -6,7 +6,6 @@ import java.util.Date;
 public class OroceniRacun extends Racun {
 
     OroceniRacun(String brR, Vlasnik v, double p, double kam){super(brR, v, p, kam);}
-    OroceniRacun(String brR, VlasnikPravna v, double p, double kam){super(brR, v, p, kam);}
     @Override
     public boolean isplata(Date d, Iznos iznos)
     {

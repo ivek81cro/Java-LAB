@@ -9,8 +9,8 @@ public class Banka {
     public static void main(String[] args) throws ParseException {
         //Prvi dio
 
-        Vlasnik v1=new Vlasnik("Ivo", "Ivić", "1234567890");
-        Vlasnik v2=new Vlasnik("Marko", "Marić", "1234567890", "Maksimir 11");
+        Vlasnik v1=new VlasnikFizicka("Ivo", "Ivić", "1234567890");
+        Vlasnik v2=new VlasnikFizicka("Marko", "Marić", "1234567890", "Maksimir 11");
         System.out.println(v2.ispisPodataka());
 
         Racun b1=new Racun("0001",v1,3200.00);
@@ -35,8 +35,8 @@ public class Banka {
 
         //Drugi dio
 
-        Vlasnik v3=new Vlasnik("Ivo", "Ivić", "1234567890");
-        VlasnikPravna v4 = new VlasnikPravna(v1,"09876543210","Ulica 15", "Firma d.d.");
+        Vlasnik v3=new VlasnikFizicka("Ivo", "Ivić", "1234567890");
+        Vlasnik v4 = new VlasnikPravna((VlasnikFizicka) v1,"09876543210","Ulica 15", "Firma d.d.");
 
         Racun b4;
         Racun b5;
