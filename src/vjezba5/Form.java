@@ -1,13 +1,25 @@
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
+
+import org.slf4j.LoggerFactory;
+
+import ch.qos.logback.classic.Logger;
+
 import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.awt.event.ActionEvent;
@@ -17,6 +29,8 @@ public class Form {
 
 	private JFrame frame;
 	private JTextField textField;
+	private JTextArea textArea;
+	private static final Logger log = (Logger) LoggerFactory.getLogger(Form.class);
 
 	/**
 	 * Launch the application.
@@ -64,16 +78,19 @@ public class Form {
 		
 		frame.getContentPane().add(scrp);
 		
+		connect();
+		
 		JButton btnNewButton = new JButton("Po\u0161alji");
 		springLayout.putConstraint(SpringLayout.EAST, scrp, -5, SpringLayout.WEST, btnNewButton);
 		btnNewButton.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+				/*DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 				LocalDateTime now = LocalDateTime.now();  
 				textArea.append(dtf.format(now) + ">  " + textField.getText() + "\n");
-				textField.setText(null);
+				textField.setText(null);*/
+				send();
 			}
 		});
 		
@@ -110,4 +127,57 @@ public class Form {
 		springLayout.putConstraint(SpringLayout.SOUTH, btnKonfiguracija, 0, SpringLayout.SOUTH, textArea);
 		frame.getContentPane().add(btnKonfiguracija);
 	}
+	private Socket soc;
+	private BufferedReader br;
+	private PrintWriter pw;
+	
+	private void connect()
+	{
+		try 
+		{
+			soc = new Socket(UserConfig.getHost(), UserConfig.getPort());
+			br = new BufferedReader(new InputStreamReader(soc.getInputStream()));
+			pw = new PrintWriter(soc.getOutputStream());
+			String response;
+			try 
+			{
+				response = br.readLine();
+				if (textArea.getText().length()>0)
+						textArea.append("\n");
+				textArea.append(response);
+				textArea.setText(null);
+			} catch (IOException e) {
+				log.error("Greška kod čitanja inicijalnog odgovora", e);
+				JOptionPane.showMessageDialog(textField, "Greška kod čitanja inicijalnog odgovora", "Greška!", JOptionPane.ERROR_MESSAGE);
+			}
+		} catch (UnknownHostException e) {
+			log.error("Nepoznati host", e);
+			frame.dispose();
+		} catch (IOException e) {
+			log.error("IO iznimka", e);
+			frame.dispose();
+		}
+	}
+	
+	private void send(){
+		pw.println(textField.getText());
+		if (pw.checkError())
+		{
+			JOptionPane.showMessageDialog(textField, "Greška kod slanja poruke",
+					"Greška!", JOptionPane.ERROR_MESSAGE);
+		}
+		String response;
+		try {
+				response = br.readLine();
+				if (textArea.getText().length()>0)
+					textArea.append("\n");
+				textArea.append(response);
+				textArea.setText(null);
+		} catch (IOException e) {
+		log.error("Greška kod čitanja", e);
+		JOptionPane.showMessageDialog(textField, "Greška kod čitanja odgovora",
+		"Greška!", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
 }
