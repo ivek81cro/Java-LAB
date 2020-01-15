@@ -31,14 +31,14 @@ od limita (100MB) napravi se nova) -->
 svaki logger čije ime počinje sa hr.vsite se ispisuje na appender-e STDOUT i FILE definirane gore
 pod level se može definirati od koje razine se zapisuju poruke; ALL – poruke svih razina
 -->
-<logger name="hr.vsite" additivity="false" level="ERROR">
+<logger name="hr.vsite" additivity="false" level="ALL">
 <appender-ref ref="FILE"/>
 </logger>
 <logger name="Form" additivity="false" level="ALL">
-<appender-ref ref="STDOUT"/>
+<appender-ref ref="FILE"/>
 </logger>
 <!--root logger ili default postavke -->
-<root level="WARN">
+<root level="ALL">
 <appender-ref ref="STDOUT"/>
 </root>
 </configuration>

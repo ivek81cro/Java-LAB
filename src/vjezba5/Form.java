@@ -22,6 +22,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
@@ -98,7 +100,11 @@ public class Form {
 			{
 				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 				LocalDateTime now = LocalDateTime.now();  
-				textArea.append(dtf.format(now) + ">  " + textField.getText() + "\n");
+				textArea.append(dtf.format(now) + ">  " + textField.getText());
+				
+				UserConfig.loadParams();
+				DBConnection dc = new DBConnection();
+				dc.snimiPoruku(UserConfig.getKorisnik(), textField.getText());
 				
 				send();
 				
@@ -128,6 +134,13 @@ public class Form {
 		frame.getContentPane().add(btnKonfiguracija);
 		
 		connect();
+		
+		List<String> message=new LinkedList<String>();
+		DBConnection dc = new DBConnection();
+		message=dc.svePoruke();
+		for (int i = 0; i < message.size(); i++) {
+			textArea.append(message.get(i) + '\n');
+		}
 	}
 	private Socket soc=null;
 	private BufferedReader br=null;
@@ -163,7 +176,8 @@ public class Form {
 		}
 	}
 	
-	private void send(){
+	private void send()
+	{
 		pw.println(textField.getText());
 		if (pw.checkError())
 		{
@@ -173,10 +187,14 @@ public class Form {
 		String response;
 		try {
 				response = br.readLine();
+				String[] user=response.split(":",2);				
 				if (textArea.getText().length()>0)
 					textArea.append("\n");
 				textArea.append(response);
 				textArea.append("\n");
+				log.error("Poruka poslana", response);
+				DBConnection cd = new DBConnection();
+				cd.snimiPoruku(user[0], user[1]);
 				//textArea.setText(null);
 		} catch (IOException e) {
 		log.error("Greška kod čitanja", e);
