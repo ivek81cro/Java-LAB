@@ -1,3 +1,3 @@
 # Java-LAB
-Lab1
+Lab
 Vjezbe
