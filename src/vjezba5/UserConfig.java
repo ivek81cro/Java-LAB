@@ -47,19 +47,21 @@ public class UserConfig {
 		try {
 			File f = new File(propertiesFile);
 			is = new FileInputStream(f);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 			is = null;
 		}
 		try {
 			// pokušavaju se uèitati parametri
 			props.load(is);
-		} catch (Exception e) {}
+		} 
+		catch (Exception e) {}
 		// prvi parametar: naziv postavke
 		// drugi parametar: ako nije naðena vrijednost onda se vraæa drugi
 		// parametar
-		host = props.getProperty(hostPropertieName, "192.168.0.1");
-		port = new Integer(props.getProperty(portPropertieName, "8080"));
+		host = props.getProperty(hostPropertieName, "127.0.0.1");
+		port = new Integer(props.getProperty(portPropertieName, "4444"));
 		korisnik = props.getProperty(userPropertieName, "anonymous");
 	}
 
