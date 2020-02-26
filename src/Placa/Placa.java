@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Insets;
+import javax.swing.JLabel;
 
 public class Placa {
 
@@ -52,7 +53,7 @@ public class Placa {
 				dialog.setVisible(true);
 			}
 		});
-		btnZaposlenici.setBounds(10, 11, 108, 23);
+		btnZaposlenici.setBounds(10, 36, 108, 23);
 		frmObraunPlae.getContentPane().add(btnZaposlenici);
 		
 		JButton btnNewButton = new JButton("Radna mjesta");
@@ -62,7 +63,7 @@ public class Placa {
 				rm.setVisible(true);
 			}
 		});
-		btnNewButton.setBounds(128, 11, 127, 23);
+		btnNewButton.setBounds(391, 70, 127, 23);
 		frmObraunPlae.getContentPane().add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("Postavke koef.");
@@ -72,7 +73,7 @@ public class Placa {
 				pp.setVisible(true);
 			}
 		});
-		btnNewButton_1.setBounds(265, 11, 127, 23);
+		btnNewButton_1.setBounds(391, 36, 127, 23);
 		frmObraunPlae.getContentPane().add(btnNewButton_1);
 		
 		JButton btnNewButton_2 = new JButton("Sistematizacija");
@@ -83,7 +84,7 @@ public class Placa {
 			}
 		});
 		btnNewButton_2.setMargin(new Insets(2, 5, 2, 5));
-		btnNewButton_2.setBounds(10, 45, 108, 23);
+		btnNewButton_2.setBounds(10, 70, 108, 23);
 		frmObraunPlae.getContentPane().add(btnNewButton_2);
 		
 		JButton btnIzracun = new JButton("Izra\u010Dun");
@@ -93,7 +94,7 @@ public class Placa {
 				s.setVisible(true);
 			}
 		});
-		btnIzracun.setBounds(128, 45, 127, 23);
+		btnIzracun.setBounds(10, 138, 108, 23);
 		frmObraunPlae.getContentPane().add(btnIzracun);
 		
 		JButton btnNewButton_3 = new JButton("Neoporezivo");
@@ -103,7 +104,15 @@ public class Placa {
 				n.setVisible(true);
 			}
 		});
-		btnNewButton_3.setBounds(265, 45, 127, 23);
+		btnNewButton_3.setBounds(10, 104, 108, 23);
 		frmObraunPlae.getContentPane().add(btnNewButton_3);
+		
+		JLabel lblObradaZaposlenikaI = new JLabel("Obrada zaposlenika i pla\u0107e");
+		lblObradaZaposlenikaI.setBounds(10, 11, 157, 14);
+		frmObraunPlae.getContentPane().add(lblObradaZaposlenikaI);
+		
+		JLabel lblKonifiguracija = new JLabel("Konifiguracija");
+		lblKonifiguracija.setBounds(391, 11, 127, 14);
+		frmObraunPlae.getContentPane().add(lblKonifiguracija);
 	}
 }

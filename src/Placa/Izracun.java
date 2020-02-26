@@ -54,6 +54,10 @@ public class Izracun extends JDialog {
 		JComboBox<Object> comboBox = new JComboBox<Object>();
 		
 		JButton btnObracunaj = new JButton("Obra\u010Dunaj pla\u0107u");
+		btnObracunaj.setMargin(new Insets(2, 5, 2, 5));
+		springLayout.putConstraint(SpringLayout.NORTH, btnObracunaj, 10, SpringLayout.NORTH, getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, btnObracunaj, 10, SpringLayout.WEST, getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, btnObracunaj, 153, SpringLayout.WEST, getContentPane());
 		btnObracunaj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				double neoporezivo=0, sati = 0, prekovremeni=0;
@@ -78,10 +82,7 @@ public class Izracun extends JDialog {
 				UpdateTable();
 			}
 		});
-		btnObracunaj.setMargin(new Insets(2, 5, 2, 5));
-		springLayout.putConstraint(SpringLayout.NORTH, btnObracunaj, 10, SpringLayout.NORTH, getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, btnObracunaj, 10, SpringLayout.WEST, getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, btnObracunaj, 153, SpringLayout.WEST, getContentPane());
+		
 		getContentPane().add(btnObracunaj);
 		
 		table = new JTable();
@@ -124,6 +125,7 @@ public class Izracun extends JDialog {
 		springLayout.putConstraint(SpringLayout.WEST, txtSati, 5, SpringLayout.EAST, lblNewLabel_1);
 		springLayout.putConstraint(SpringLayout.SOUTH, txtSati, 0, SpringLayout.SOUTH, lblNewLabel_1);
 		getContentPane().add(txtSati);
+		txtSati.setText("160");
 		txtSati.setColumns(10);
 		
 		JLabel lblOdTogaPrekovremeno = new JLabel("od toga prekovremeno");
@@ -137,6 +139,7 @@ public class Izracun extends JDialog {
 		springLayout.putConstraint(SpringLayout.WEST, txtPrekovremeni, 6, SpringLayout.EAST, lblOdTogaPrekovremeno);
 		springLayout.putConstraint(SpringLayout.SOUTH, txtPrekovremeni, 0, SpringLayout.SOUTH, txtSati);
 		getContentPane().add(txtPrekovremeni);
+		txtPrekovremeni.setText("0");
 		txtPrekovremeni.setColumns(10);		
 	}
 	
