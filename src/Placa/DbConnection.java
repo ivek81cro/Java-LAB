@@ -39,6 +39,39 @@ public class DbConnection {
 		return model;
 	}
 	
+	public Zaposlenik DohvatiZaposlenika(String x_oib)
+	{
+		Zaposlenik z = new Zaposlenik();
+		try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/obracun?serverTimezone=UTC", "java", "java");
+            PreparedStatement pstm = con.prepareStatement("SELECT * FROM zaposlenici WHERE oib=?;");
+            pstm.setString(1, x_oib);
+            ResultSet rs = pstm.executeQuery();
+            while(rs.next()){
+            	String oib = rs.getString("oib");
+                String ime = rs.getString("ime");
+                String prezime = rs.getString("prezime");
+                String adresa = rs.getString("adresa");
+                String grad = rs.getString("grad");
+                Double prirez = rs.getDouble("prirez");
+                Double olaksica = rs.getDouble("olaksica");
+                
+                z.setIme(ime);
+                z.setPrezme(prezime);
+                z.setAdresa(adresa);
+                z.setGrad(grad);
+                z.setPrirez(prirez);
+                z.setOlaksica(olaksica);
+                z.setOib(oib);                
+            }
+            con.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+		return z;
+	}
+	
 	public ArrayList<String> prikazImena()
 	{
 		ArrayList<String> imena = new ArrayList<String>();
@@ -50,8 +83,7 @@ public class DbConnection {
 			ResultSet rs = pstm.executeQuery(); 
 
 			while (rs.next()) { 
-				String ime = rs.getString("id") + ". " + rs.getString("ime") + " " + rs.getString("prezime"); 
-				// add group names to the array list
+				String ime = rs.getString("id") + ". " + rs.getString("ime") + " " + rs.getString("prezime");
 				imena.add(ime);
 			} 
 
@@ -94,6 +126,30 @@ public class DbConnection {
             pstm.setInt(1, id);
             pstm.execute();
             con.close();
+        } 
+		catch (Exception e) 
+		{
+            System.out.println(e.getMessage());
+            return false;
+        }
+		return true;
+	}
+
+	public boolean IzmjeniZaposlenika(Zaposlenik z)
+	{
+		try 
+		{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/obracun?serverTimezone=UTC", "java", "java");
+            PreparedStatement pstm = con.prepareStatement("UPDATE zaposlenici SET ime=?,prezime=?,adresa=?,grad=?, olaksica=?, prirez=? WHERE oib=?");
+            pstm.setString(7, z.getOib());
+            pstm.setString(1, z.getIme());
+            pstm.setString(2, z.getPrezime());
+            pstm.setString(3, z.getAdresa());
+            pstm.setString(4, z.getGrad());
+            pstm.setDouble(5, z.getOlaksica());
+            pstm.setDouble(6, z.getPrirez());
+            pstm.execute();
         } 
 		catch (Exception e) 
 		{

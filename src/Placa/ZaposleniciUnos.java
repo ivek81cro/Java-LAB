@@ -21,13 +21,14 @@ public class ZaposleniciUnos extends JDialog {
 	private JTextField txtGrad;
 	private JTextField txtPrirez;
 	private JTextField txtOlaksica;
+	private static String m_oib;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			ZaposleniciUnos dialog = new ZaposleniciUnos();
+			ZaposleniciUnos dialog = new ZaposleniciUnos(m_oib);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -38,7 +39,8 @@ public class ZaposleniciUnos extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public ZaposleniciUnos() {
+	public ZaposleniciUnos(String oib) {
+		m_oib=oib;
 		setResizable(false);
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setModal(true);
@@ -84,13 +86,11 @@ public class ZaposleniciUnos extends JDialog {
 		getContentPane().add(lbGrad);
 		
 		txtOib = new JTextField();
-		txtOib.setText("12345678901");
 		springLayout.putConstraint(SpringLayout.NORTH, txtOib, -3, SpringLayout.NORTH, lbOib);
 		getContentPane().add(txtOib);
 		txtOib.setColumns(10);
 		
 		txtIme = new JTextField();
-		txtIme.setText("Marko");
 		springLayout.putConstraint(SpringLayout.WEST, txtOib, 0, SpringLayout.WEST, txtIme);
 		springLayout.putConstraint(SpringLayout.WEST, txtIme, 20, SpringLayout.EAST, lbIme);
 		springLayout.putConstraint(SpringLayout.EAST, txtIme, -321, SpringLayout.EAST, getContentPane());
@@ -100,7 +100,6 @@ public class ZaposleniciUnos extends JDialog {
 		getContentPane().add(txtIme);
 		
 		txtPrezime = new JTextField();
-		txtPrezime.setText("Mari\u0107");
 		springLayout.putConstraint(SpringLayout.NORTH, txtPrezime, -3, SpringLayout.NORTH, lbPrezime);
 		springLayout.putConstraint(SpringLayout.WEST, txtPrezime, 20, SpringLayout.EAST, lbPrezime);
 		springLayout.putConstraint(SpringLayout.EAST, txtPrezime, -321, SpringLayout.EAST, getContentPane());
@@ -108,7 +107,6 @@ public class ZaposleniciUnos extends JDialog {
 		getContentPane().add(txtPrezime);
 		
 		txtAdresa = new JTextField();
-		txtAdresa.setText("Ulica 1");
 		springLayout.putConstraint(SpringLayout.NORTH, txtAdresa, -3, SpringLayout.NORTH, lbAdresa);
 		springLayout.putConstraint(SpringLayout.WEST, txtAdresa, 20, SpringLayout.EAST, lbAdresa);
 		springLayout.putConstraint(SpringLayout.EAST, txtAdresa, -321, SpringLayout.EAST, getContentPane());
@@ -116,7 +114,6 @@ public class ZaposleniciUnos extends JDialog {
 		getContentPane().add(txtAdresa);
 		
 		txtGrad = new JTextField();
-		txtGrad.setText("Zagreb");
 		springLayout.putConstraint(SpringLayout.NORTH, txtGrad, -3, SpringLayout.NORTH, lbGrad);
 		springLayout.putConstraint(SpringLayout.WEST, txtGrad, 20, SpringLayout.EAST, lbGrad);
 		springLayout.putConstraint(SpringLayout.EAST, txtGrad, -321, SpringLayout.EAST, getContentPane());
@@ -139,11 +136,12 @@ public class ZaposleniciUnos extends JDialog {
 					if(prirez>1)
 						prirez=prirez/100.0;
 				}
-				DbConnection dc = new DbConnection();
+				
 				Zaposlenik z = new Zaposlenik(txtOib.getText(), txtIme.getText(), txtPrezime.getText(), txtAdresa.getText(), 
 						txtGrad.getText(), olaksica, prirez);
 				if(z.Kontrola())
 				{
+					DbConnection dc = new DbConnection();
 					if(dc.UnesiZaposlenika(z))
 					{
 						dispose();
@@ -173,18 +171,83 @@ public class ZaposleniciUnos extends JDialog {
 		getContentPane().add(lblOlakica);
 		
 		txtPrirez = new JTextField();
-		txtPrirez.setText("0.18");
 		springLayout.putConstraint(SpringLayout.NORTH, txtPrirez, -2, SpringLayout.NORTH, lbOib);
 		txtPrirez.setColumns(10);
 		getContentPane().add(txtPrirez);
 		
 		txtOlaksica = new JTextField();
-		txtOlaksica.setText("0.7");
 		springLayout.putConstraint(SpringLayout.EAST, txtPrirez, 0, SpringLayout.EAST, txtOlaksica);
 		springLayout.putConstraint(SpringLayout.WEST, txtOlaksica, 6, SpringLayout.EAST, lblOlakica);
 		springLayout.putConstraint(SpringLayout.SOUTH, txtOlaksica, 0, SpringLayout.SOUTH, lbIme);
 		txtOlaksica.setColumns(10);
 		getContentPane().add(txtOlaksica);
 		
+		JButton btnNewButton_1 = new JButton("Izmjeni");
+		springLayout.putConstraint(SpringLayout.WEST, btnNewButton_1, -92, SpringLayout.EAST, getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, btnNewButton_1, -10, SpringLayout.SOUTH, getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, btnNewButton_1, -10, SpringLayout.EAST, getContentPane());
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				
+				DoubleCheck dch = new DoubleCheck();
+				double olaksica=0, prirez=0;
+				if(dch.check(txtPrirez.getText()) & dch.check(txtOlaksica.getText()))
+				{
+					olaksica = Double.parseDouble(txtOlaksica.getText());
+					prirez = Double.parseDouble(txtPrirez.getText());
+					
+					if(prirez>1)
+						prirez=prirez/100.0;
+				}
+				Zaposlenik z = new Zaposlenik();
+				z.setOlaksica(olaksica);
+				z.setPrirez(prirez);
+				z.setOib(txtOib.getText());
+				z.setIme(txtIme.getText());
+				z.setAdresa(txtAdresa.getText());
+				z.setGrad(txtGrad.getText());
+				z.setPrezme(txtPrezime.getText());
+				if(z.Kontrola())
+				{
+					DbConnection dc = new DbConnection();
+					if(dc.IzmjeniZaposlenika(z))
+					{
+						dispose();
+					}
+					else 
+					{
+						JOptionPane.showMessageDialog(null, "Greška kod izmjene, zaposlenik nije izmjenjen");
+					}
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Greška kod izmjene, zaposlenik nije izmjenjen");
+				}
+			}
+		});
+		getContentPane().add(btnNewButton_1);
+		btnNewButton_1.setVisible(false);
+		
+		if(m_oib != "0")
+		{
+			dohvati();
+			btnNewButton_1.setVisible(true);
+			btnNewButton.setVisible(false);
+		}
+		
+	}
+	
+	private void dohvati()
+	{
+		DbConnection dc = new DbConnection();
+		Zaposlenik z = new Zaposlenik();
+		z =dc.DohvatiZaposlenika(m_oib);
+		txtIme.setText(z.getIme());
+		txtPrezime.setText(z.getPrezime());
+		txtAdresa.setText(z.getAdresa());
+		txtGrad.setText(z.getGrad());
+		txtPrirez.setText(Double.toString(z.getPrirez()));
+		txtOlaksica.setText(Double.toString(z.getOlaksica()));
+		txtOib.setText(z.getOib());
 	}
 }

@@ -59,7 +59,7 @@ public class Zaposlenici extends JDialog {
 				btnUnos.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) 
 					{
-						ZaposleniciUnos dialog = new ZaposleniciUnos();
+						ZaposleniciUnos dialog = new ZaposleniciUnos("0");
 						dialog.setVisible(true);
 						UpdateTable();
 					}
@@ -87,6 +87,28 @@ public class Zaposlenici extends JDialog {
 						UpdateTable();
 					}
 				});
+				{
+					JButton btnNewButton = new JButton("Izmjeni");
+					btnNewButton.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							int indexRow = table.getSelectedRow();						
+							if(indexRow!=-1) 
+							{
+								String oib =table.getValueAt(indexRow, 1).toString();
+								ZaposleniciUnos dialog = new ZaposleniciUnos(oib);
+								dialog.setVisible(true);
+							}
+							else
+							{
+								JOptionPane.showMessageDialog(null, "Nije odabran zaposlenik");
+							}
+							UpdateTable();
+							
+							UpdateTable();
+						}
+					});
+					panel.add(btnNewButton);
+				}
 				panel.add(btnBrisi);
 			}
 		}
