@@ -23,13 +23,15 @@ public class RadnaMjUnos extends JDialog {
 	private JTextField txtNaziv;
 	private JTextField txtKoeficijent;
 	private JLabel lblKoeficijent;
+	private static int m_id;
+	private JButton btnIzmjeni;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			RadnaMjUnos dialog = new RadnaMjUnos();
+			RadnaMjUnos dialog = new RadnaMjUnos(m_id);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -40,7 +42,8 @@ public class RadnaMjUnos extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public RadnaMjUnos() {
+	public RadnaMjUnos(int id) {
+		m_id=id;
 		setModal(true);
 		setTitle("Unos radnog mijesta");
 		setResizable(false);
@@ -76,8 +79,8 @@ public class RadnaMjUnos extends JDialog {
 		txtKoeficijent.setColumns(10);
 		contentPanel.add(txtKoeficijent);
 		
-		JButton btnNewButton = new JButton("Spremi");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnSpremi = new JButton("Spremi");
+		btnSpremi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String koef = txtKoeficijent.getText().replace(",", ".");
 				DbConnection dbc = new DbConnection();
@@ -101,8 +104,53 @@ public class RadnaMjUnos extends JDialog {
 				}
 			}
 		});
-		sl_contentPanel.putConstraint(SpringLayout.SOUTH, btnNewButton, -10, SpringLayout.SOUTH, contentPanel);
-		sl_contentPanel.putConstraint(SpringLayout.EAST, btnNewButton, -10, SpringLayout.EAST, contentPanel);
-		contentPanel.add(btnNewButton);
+		sl_contentPanel.putConstraint(SpringLayout.SOUTH, btnSpremi, -10, SpringLayout.SOUTH, contentPanel);
+		sl_contentPanel.putConstraint(SpringLayout.EAST, btnSpremi, -10, SpringLayout.EAST, contentPanel);
+		contentPanel.add(btnSpremi);
+		
+		btnIzmjeni = new JButton("Izmjeni");
+		btnIzmjeni.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String koef = txtKoeficijent.getText().replace(",", ".");
+				DbConnection dbc = new DbConnection();
+				DoubleCheck dc = new DoubleCheck();
+				if(dc.check(koef))
+				{
+					double k = Double.parseDouble(koef);
+					RadnoMjesto rm = new RadnoMjesto(txtNaziv.getText(),k);
+					if(dbc.IzmjeniRadnoMjesto(rm, m_id))
+					{
+						dispose();
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Greška kod unosa, radno mjesto nije izmjenjeno");
+					}
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Unesite koeficijent u odgovarajuæem formatu");
+				}
+			}
+		});
+		sl_contentPanel.putConstraint(SpringLayout.SOUTH, btnIzmjeni, -10, SpringLayout.SOUTH, contentPanel);
+		sl_contentPanel.putConstraint(SpringLayout.EAST, btnIzmjeni, -10, SpringLayout.EAST, contentPanel);
+		contentPanel.add(btnIzmjeni);
+		btnIzmjeni.setVisible(false);
+		if(m_id!=0)
+		{
+			btnSpremi.setVisible(false);
+			btnIzmjeni.setVisible(true);
+			dohvati();
+		}
+	}
+	
+	private void dohvati()
+	{
+		DbConnection dc = new DbConnection();
+		RadnoMjesto rm = new RadnoMjesto();
+		rm = dc.DohvatiRadnoMjesto(m_id);
+		txtNaziv.setText(rm.getNaziv());
+		txtKoeficijent.setText(Double.toString(rm.getKoeficijent()));		
 	}
 }

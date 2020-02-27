@@ -240,6 +240,28 @@ public class DbConnection {
 		return mj;
 	}
 	
+	public RadnoMjesto DohvatiRadnoMjesto(int id)
+	{
+		RadnoMjesto rm = new RadnoMjesto();
+		try 
+		{
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/obracun?serverTimezone=UTC", "java", "java");
+			PreparedStatement pstm = con.prepareStatement("SELECT id, naziv, koeficijent FROM sistematizacija WHERE id=?;");
+			pstm.setInt(1, id);
+			ResultSet rs = pstm.executeQuery(); 
+			while (rs.next()) { 
+				String[] mjesto = {rs.getString("id") , rs.getString("naziv") , rs.getString("koeficijent")}; 
+				rm.setNaziv(mjesto[1]);
+				rm.setKoeficijent(Double.parseDouble(mjesto[2]));
+			} 
+
+		rs.close();
+		} catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+		return rm;
+	}
+	
 	public boolean UnosRadnogmjesta(RadnoMjesto r)
 	{
 		try 
@@ -249,6 +271,28 @@ public class DbConnection {
 			PreparedStatement pstm = con.prepareStatement("INSERT INTO sistematizacija (naziv,koeficijent) VALUES(?,?)");
 			pstm.setString(1, r.getNaziv());
 			pstm.setDouble(2, r.getKoeficijent());
+        
+			pstm.execute();
+			con.close();
+		} 
+		catch (Exception e) 
+		{
+			System.out.println(e.getMessage());
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean IzmjeniRadnoMjesto(RadnoMjesto rm, int id)
+	{
+		try 
+		{
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/obracun?serverTimezone=UTC", "java", "java");
+			PreparedStatement pstm = con.prepareStatement("UPDATE sistematizacija SET naziv=?, koeficijent=? WHERE id=?;");
+			pstm.setInt(3, id);
+			pstm.setString(1, rm.getNaziv());
+			pstm.setDouble(2, rm.getKoeficijent());
         
 			pstm.execute();
 			con.close();

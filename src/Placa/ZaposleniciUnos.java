@@ -241,7 +241,7 @@ public class ZaposleniciUnos extends JDialog {
 	{
 		DbConnection dc = new DbConnection();
 		Zaposlenik z = new Zaposlenik();
-		z =dc.DohvatiZaposlenika(m_oib);
+		z = dc.DohvatiZaposlenika(m_oib);
 		txtIme.setText(z.getIme());
 		txtPrezime.setText(z.getPrezime());
 		txtAdresa.setText(z.getAdresa());

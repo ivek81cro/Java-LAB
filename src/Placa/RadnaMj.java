@@ -18,9 +18,9 @@ public class RadnaMj extends JDialog {
 	 */
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private JButton btnNewButton;
-	private JButton btnNewButton_1;
-	private JTable table;
+	private JButton btnUnos;
+	private JButton btnBrisi;
+	private JTable table;	
 
 	/**
 	 * Launch the application.
@@ -53,26 +53,27 @@ public class RadnaMj extends JDialog {
 		contentPanel.setLayout(sl_contentPanel);
 		{
 			{
-				btnNewButton = new JButton("Unos");
-				btnNewButton.addActionListener(new ActionListener() {
+				btnUnos = new JButton("Unos");
+				btnUnos.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						RadnaMjUnos ru = new RadnaMjUnos();
+						RadnaMjUnos ru = new RadnaMjUnos(0);
 						ru.setVisible(true);
 						UpdateTable();
 					}
 				});
-				sl_contentPanel.putConstraint(SpringLayout.NORTH, btnNewButton, 10, SpringLayout.NORTH, contentPanel);
-				sl_contentPanel.putConstraint(SpringLayout.WEST, btnNewButton, 10, SpringLayout.WEST, contentPanel);
-				contentPanel.add(btnNewButton);
+				sl_contentPanel.putConstraint(SpringLayout.NORTH, btnUnos, 10, SpringLayout.NORTH, contentPanel);
+				sl_contentPanel.putConstraint(SpringLayout.WEST, btnUnos, 10, SpringLayout.WEST, contentPanel);
+				contentPanel.add(btnUnos);
 			}
 			{
-				btnNewButton_1 = new JButton("Bri\u0161i");
-				btnNewButton_1.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						DbConnection dc = new DbConnection();
+				btnBrisi = new JButton("Bri\u0161i");
+				sl_contentPanel.putConstraint(SpringLayout.NORTH, btnBrisi, 0, SpringLayout.NORTH, btnUnos);
+				btnBrisi.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {						
 						int indexRow = table.getSelectedRow();						
 						if(indexRow!=-1) 
 						{
+							DbConnection dc = new DbConnection();
 							int id=Integer.parseInt(table.getValueAt(indexRow, 0).toString());
 							dc.BrisiRadnoMjesto(id);
 						}
@@ -83,9 +84,7 @@ public class RadnaMj extends JDialog {
 						UpdateTable();
 					}
 				});
-				sl_contentPanel.putConstraint(SpringLayout.NORTH, btnNewButton_1, 0, SpringLayout.NORTH, btnNewButton);
-				sl_contentPanel.putConstraint(SpringLayout.WEST, btnNewButton_1, 13, SpringLayout.EAST, btnNewButton);
-				contentPanel.add(btnNewButton_1);
+				contentPanel.add(btnBrisi);
 			}
 			
 			table = new JTable();
@@ -93,6 +92,28 @@ public class RadnaMj extends JDialog {
 			springLayout.putConstraint(SpringLayout.SOUTH, table, -102, SpringLayout.SOUTH, getContentPane());
 			JScrollPane scrollPane = new JScrollPane(table);
 			springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 0, SpringLayout.SOUTH, contentPanel);
+			
+			JButton btnIzmjeni = new JButton("Izmjeni");
+			btnIzmjeni.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					int indexRow = table.getSelectedRow();						
+					if(indexRow!=-1) 
+					{
+						int id=Integer.parseInt(table.getValueAt(indexRow, 0).toString());
+						RadnaMjUnos ru = new RadnaMjUnos(id);
+						ru.setVisible(true);
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Nije odabran zaposlenik");
+					}
+					UpdateTable();
+				}
+			});
+			sl_contentPanel.putConstraint(SpringLayout.WEST, btnBrisi, 5, SpringLayout.EAST, btnIzmjeni);
+			sl_contentPanel.putConstraint(SpringLayout.WEST, btnIzmjeni, 5, SpringLayout.EAST, btnUnos);
+			sl_contentPanel.putConstraint(SpringLayout.NORTH, btnIzmjeni, 0, SpringLayout.NORTH, btnUnos);
+			contentPanel.add(btnIzmjeni);
 			springLayout.putConstraint(SpringLayout.WEST, scrollPane, 0, SpringLayout.WEST, getContentPane());
 			springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, 0, SpringLayout.SOUTH, getContentPane());
 			springLayout.putConstraint(SpringLayout.EAST, scrollPane, 0, SpringLayout.EAST, getContentPane());
