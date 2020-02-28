@@ -61,16 +61,20 @@ public class Obracun {
 		double osnOdbitak = placa.getOdbitak();
 		odbitak = Math.round((osnOdbitak + 2400.0 * z.getOlaksica()) * 100.0) / 100.0;
 		netto += odbitak;
-		if(odbitak < iznos) 
+		if(odbitak < iznos & iznos-odbitak<30000.0) 
 		{
 			iznos -= odbitak;
 			iznos -= porez1 = Math.round(iznos * placa.getPorez1()* 100.0) / 100.0;
-			
-			if(iznos>30000.01)
-				iznos -= porez2 = Math.round(iznos * placa.getPorez2()* 100.0) / 100.0;
-			porezUkupno = porez1+porez2;
-			iznos -= prirez = Math.round(porezUkupno * z.getPrirez()* 100.0) / 100.0;
 		}
+		else 
+		{
+			iznos -= odbitak;
+			porez1 = Math.round(30000.0 * placa.getPorez1() * 100.0) / 100.0;
+			porez2 = Math.round((iznos-30000.0) * placa.getPorez2() * 100.0) / 100.0;
+			iznos -= porez1 + porez2;
+		}
+		porezUkupno = porez1 + porez2;
+		iznos -= prirez = Math.round(porezUkupno * z.getPrirez() * 100.0) / 100.0;
 		netto += Math.round(iznos * 100.0) / 100.0;
 		porezPrirez = porezUkupno + prirez;
 		doprinosZdravstvo = Math.round(bruto * placa.getZdravstveno()* 100.0) / 100.0;
